@@ -1,0 +1,23 @@
+pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        file("local.properties").withInputStream { properties.load(it) }
+        def flutterSdkPath = properties.getProperty("flutter.sdk")
+        assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+        return flutterSdkPath
+    }
+    settings.ext.flutterSdkPath = flutterSdkPath()
+
+    // Flutter Gradle Plugin ships together with the Flutter SDK
+    includeBuild("${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle")
+
+    plugins {
+        // Add the default Flutter Gradle Plugin
+        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+
+        // Add the Flutter plugin loader Gradle Plugin
+        id "dev.flutter.flutter-plugin-loader" version "1.0.0" apply false
+    }
+}
+
+include ':app'
